@@ -1,8 +1,11 @@
-from flask import Blueprint, render_template, redirect
-from diary import Diary
-
 from datetime import datetime, date
 from calendar import monthrange
+
+from flask import Blueprint, render_template, redirect
+from markdown import markdown
+
+from diary import Diary
+
 
 bp = Blueprint("main", __name__, url_prefix="/")
 
@@ -40,7 +43,7 @@ def content(year, month, day):
     except ValueError:
         return redirect("/invalid_date")
     diary = Diary.query.get_or_404(d)
-    return render_template("diary.html", diary=diary)
+    return render_template("content.html", content=markdown(diary.content))
 
 # TODO: make button to go today
 @bp.route("/invalid_date")

@@ -18,12 +18,8 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from .views import main_view
-    app.register_blueprint(main_view.bp)
-
-    @app.route("/")
-    def home():
-        return "Hello"
+    from . import view
+    app.register_blueprint(view.bp)
     
     return app
     
