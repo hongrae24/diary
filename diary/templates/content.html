@@ -1,11 +1,12 @@
+<h1> {{ year }}년 {{ month }}월 {{ day }}일 일기 </h1>
 {% if content == "" %}
     아직 일기가 없습니다. 
-    <br>
-    <button onclick="location.href='{{ day }}/edit'">생성하기</button>
+    <br><br>
+    <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/edit'">생성</button>
     <button onclick="location.href='/'">돌아가기</button>
 {% else %}
     {{ content|safe }}
-    <button onclick="location.href='{{ day }}/edit'">수정하기</button>
-    <button onclick="location.href='{{ day }}/delete'">삭제하기</button>
+    <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/edit'">수정</button>
+    <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/delete'">삭제</button>
     <button onclick="location.href='/'">돌아가기</button>
 {% endif %}

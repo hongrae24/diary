@@ -1,0 +1,18 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit.css') }}">
+    <title> {{ year }}년 {{ month }}월 {{ day }}일 </title>
+</head>
+<body>
+    <h1> {{ year }}년 {{ month }}월 {{ day }}일 일기 </h1>
+    <div class="main">
+        <form action="/{{ year }}/{{ month }}/{{ day }}/save" method="post">
+            <textarea name="content", id="content" class="editor">{{ content }}</textarea>
+            <br>
+            <div class="buttons">
+                <input type="submit" value="저장" class="save"> <button onclick="location.replace('/')">돌아가기</button>
+            </div>
+        </form>
+    </div>
+</body>

@@ -1,7 +1,7 @@
 from datetime import datetime, date
 from calendar import monthrange
 
-from flask import Blueprint, render_template, redirect
+from flask import Blueprint, render_template, redirect, request
 from markdown import markdown
 
 from diary import Diary, db
@@ -44,9 +44,9 @@ def content(year, month, day):
         return redirect("/invalid_date")
     diary = Diary.query.get(d)
     if diary is None:
-        return render_template("content.html", day="/{0}/{1}/{2}".format(year, month, day), content="")
+        return render_template("content.html", year=year, month=month, day=day, content="")
     else:
-        return render_template("content.html", day="/{0}/{1}/{2}".format(year, month, day), content=markdown(diary.content))
+        return render_template("content.html", year=year, month=month, day=day, content=markdown(diary.content, extensions=['nl2br']))
 
 @bp.route("/<int:year>/<int:month>/<int:day>/edit")
 def edit(year, month, day):
@@ -54,9 +54,29 @@ def edit(year, month, day):
         d = date(year, month, day)
     except ValueError:
         return redirect("/invalid_date")
-    return ""
+    content = ""
+    diary = Diary.query.get(d)
+    if diary is not None:
+        content = diary.content
+    return render_template("edit.html", year=year, month=month, day=day, content=content)
 
-@bp.route("/<int:year>/<int:month>/<int:day>/del")
+@bp.route("/<int:year>/<int:month>/<int:day>/save", methods=('POST', ))
+def save(year, month, day):
+    try:
+        d = date(year, month, day)
+    except ValueError:
+        return redirect("/invalid_date")
+    diary = Diary.query.get(d)
+    content = request.form['content']
+    if diary is not None:
+        diary.content = content
+    else:
+        diary = Diary(date=d, content=content)
+        db.session.add(diary)
+    db.session.commit()
+    return redirect("/{0}/{1}/{2}".format(year, month, day))
+
+@bp.route("/<int:year>/<int:month>/<int:day>/delete")
 def delete(year, month, day):
     try:
         d = date(year, month, day)
@@ -67,8 +87,9 @@ def delete(year, month, day):
         res = False
     else:
         db.session.delete(diary)
+        db.session.commit()
         res = True
-    return render_template("del.html", res=res)
+    return render_template("delete.html", res=res)
 
 @bp.route("/invalid_date")
 def invalid_date():
