@@ -1,12 +1,21 @@
-<h1> {{ year }}년 {{ month }}월 {{ day }}일 일기 </h1>
-{% if content == "" %}
-    아직 일기가 없습니다. 
-    <br><br>
-    <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/edit'">생성</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='content.css') }}">
+    <title> {{ year }}년 {{ month }}월 {{ day }} </title>
+</head>
+<body>
+    <h1> {{ year }}년 {{ month }}월 {{ day }}일 일기 </h1>
+    {% if exist %}
+        <div class="content">
+            {{ content|safe }}
+        </div>
+        <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/edit'">수정</button>
+        <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/delete'">삭제</button>
+    {% else %}
+        아직 일기가 없습니다. 
+        <br>
+        <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/edit'">생성</button>
+    {% endif %}
     <button onclick="location.href='/'">돌아가기</button>
-{% else %}
-    {{ content|safe }}
-    <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/edit'">수정</button>
-    <button onclick="location.href='/{{ year }}/{{ month }}/{{ day }}/delete'">삭제</button>
-    <button onclick="location.href='/'">돌아가기</button>
-{% endif %}
+</body>

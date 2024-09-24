@@ -6,11 +6,7 @@
 }
 
 body {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
+    margin-left: 15px;
 }
 
 .main {
@@ -31,4 +27,8 @@ body {
 
 .save {
     margin-right: 5px;
+}
+
+textarea {
+    padding: 5px;
 }

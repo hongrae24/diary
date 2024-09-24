@@ -44,9 +44,9 @@ def content(year, month, day):
         return redirect("/invalid_date")
     diary = Diary.query.get(d)
     if diary is None:
-        return render_template("content.html", year=year, month=month, day=day, content="")
+        return render_template("content.html", year=year, month=month, day=day, exist=False)
     else:
-        return render_template("content.html", year=year, month=month, day=day, content=markdown(diary.content, extensions=['nl2br']))
+        return render_template("content.html", year=year, month=month, day=day, exist=True, content=markdown(diary.content, extensions=['nl2br']))
 
 @bp.route("/<int:year>/<int:month>/<int:day>/edit")
 def edit(year, month, day):
