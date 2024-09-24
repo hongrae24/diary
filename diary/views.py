@@ -4,7 +4,7 @@ from calendar import monthrange
 from flask import Blueprint, render_template, redirect
 from markdown import markdown
 
-from diary import Diary
+from diary import Diary, db
 
 
 bp = Blueprint("main", __name__, url_prefix="/")
@@ -22,7 +22,7 @@ def calendar(year, month):
         month %= 12
         month += 1
         return redirect("/{0}/{1}".format(year, month))
-    dates = [] # 0 is invalid, 1 is valid but has no data, 2 has data 
+    dates = []
     first, last = monthrange(year, month)
     for i in range(first):
         dates.append((0, False))
@@ -42,10 +42,34 @@ def content(year, month, day):
         d = date(year, month, day)
     except ValueError:
         return redirect("/invalid_date")
-    diary = Diary.query.get_or_404(d)
-    return render_template("content.html", content=markdown(diary.content))
+    diary = Diary.query.get(d)
+    if diary is None:
+        return render_template("content.html", day="/{0}/{1}/{2}".format(year, month, day), content="")
+    else:
+        return render_template("content.html", day="/{0}/{1}/{2}".format(year, month, day), content=markdown(diary.content))
 
-# TODO: make button to go today
+@bp.route("/<int:year>/<int:month>/<int:day>/edit")
+def edit(year, month, day):
+    try:
+        d = date(year, month, day)
+    except ValueError:
+        return redirect("/invalid_date")
+    return ""
+
+@bp.route("/<int:year>/<int:month>/<int:day>/del")
+def delete(year, month, day):
+    try:
+        d = date(year, month, day)
+    except ValueError:
+        return redirect("/invalid_date")
+    diary = Diary.query.get(d)
+    if diary is None:
+        res = False
+    else:
+        db.session.delete(diary)
+        res = True
+    return render_template("del.html", res=res)
+
 @bp.route("/invalid_date")
 def invalid_date():
-    return "Invalid date"
+    return "올바르지 않은 날짜입니다. <button onclick='location.href='/''>돌아가기</button>"

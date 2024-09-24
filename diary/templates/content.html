@@ -1,1 +1,11 @@
-{{ content|safe }}
+{% if content == "" %}
+    아직 일기가 없습니다. 
+    <br>
+    <button onclick="location.href='{{ day }}/edit'">생성하기</button>
+    <button onclick="location.href='/'">돌아가기</button>
+{% else %}
+    {{ content|safe }}
+    <button onclick="location.href='{{ day }}/edit'">수정하기</button>
+    <button onclick="location.href='{{ day }}/delete'">삭제하기</button>
+    <button onclick="location.href='/'">돌아가기</button>
+{% endif %}

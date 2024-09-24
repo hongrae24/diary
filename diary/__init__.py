@@ -18,8 +18,8 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from . import view
-    app.register_blueprint(view.bp)
+    from . import views
+    app.register_blueprint(views.bp)
     
     return app
     
