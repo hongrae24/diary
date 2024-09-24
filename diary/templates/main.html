@@ -1,9 +1,0 @@
-{% if diary_list %}
-    <ul>
-        {% for diary in diary_list %}
-            <li><a href="/{{diary.date}}"> {{diary.content}} </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p> No diary </p>
-{% endif %}
