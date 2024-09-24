@@ -1,15 +1,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cal.css') }}">
     <title> {{ year }}년 {{ month }}월 </title>
 <body>
     <div class="cal">
-        <div class="header">
-            <div class="nav">
-                <button class="nav-btn go-prev">&lt;</button>
-                {{ year }}년 {{ month }}월
-                <button class="nav-btn go-next">&gt;</button>
-            </div>
+        <div class="nav">
+            <button class="nav-btn go-prev" onclick="location.href='/{{ year }}/{{ month - 1 }}'">&lt;</button>
+            <div> {{ year }}년 {{ month }}월 </div>
+            <button class="nav-btn go-prev" onclick="location.href='/{{ year }}/{{ month + 1 }}'">&gt;</button>
         </div>
         <div class="main">
             <div class="days">
@@ -22,8 +21,14 @@
                 <div class="day"> 일 </div>
             </div>
             <div class="dates">
-                {% for d in dates %}
-                    <div class="date"> {% if d %} <a href="/{{ year }}/{{ month }}/{{ loop.index }}"> {% endif %} {{ loop.index }} </a> </div>
+                {% for date, data in dates %}
+                    {% if (date >= 1) %}
+                        <div class="date" onclick="location.href='/{{ year }}/{{ month }}/{{ date }}'">
+                            {% if data %}✅{% endif %}{{ date }} 
+                        </div>
+                    {% else %}
+                        <div class="date"></div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
