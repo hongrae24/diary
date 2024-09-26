@@ -9,8 +9,9 @@ itsdangerous==2.2.0
 Jinja2==3.1.4
 Mako==1.3.5
 Markdown==3.7
-markdown-checklist==0.4.4
 MarkupSafe==2.1.5
+pymdown-extensions==10.10.1
+PyYAML==6.0.2
 SQLAlchemy==2.0.35
 typing_extensions==4.12.2
 Werkzeug==3.0.4

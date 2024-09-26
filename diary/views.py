@@ -46,7 +46,7 @@ def content(year, month, day):
     if diary is None:
         return render_template("content.html", year=year, month=month, day=day, exist=False)
     else:
-        return render_template("content.html", year=year, month=month, day=day, exist=True, content=markdown(diary.content, extensions=['nl2br', 'markdown_checklist.extension']))
+        return render_template("content.html", year=year, month=month, day=day, exist=True, content=markdown(diary.content, extensions=['nl2br', 'pymdownx.tasklist', 'pymdownx.tilde']))
 
 @bp.route("/<int:year>/<int:month>/<int:day>/edit")
 def edit(year, month, day):
